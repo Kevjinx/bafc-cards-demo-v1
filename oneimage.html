@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display Image</title>
+    <style>
+      body {
+        margin-top: 20%;
+        /* Ensure minimum margin of 20% */
+      }
+
+      #image-container {
+        max-width: 100%; /* Set maximum width of image container */
+        margin: auto; /* Center the image horizontally */
+      }
+
+      img {
+        max-width: 50%; /* Ensure image fits within container */
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Remove any default inline spacing */
+        margin: auto; /* Center the image within its container */
+      }
+
+      #bottom-images {
+        display: flex; /* Use flexbox layout */
+        justify-content: space-between; /* Distribute items evenly along the main axis */
+        align-items: center; /* Center items along the cross axis */
+        margin-top: 10px; /* Add margin between top content and bottom images */
+      }
+
+      #bottom-images {
+        display: flex; /* Use flexbox layout */
+        overflow-x: auto; /* Enable horizontal scrolling */
+        margin-top: 20px; /* Add margin between top content and bottom images */
+        padding-bottom: 20px; /* Add some padding to ensure space for scrollbar */
+      }
+
+      #bottom-images img {
+        width: calc(30% - 10px); /* Set width for each image */
+        margin-right: 10px; /* Add margin between images */
+        cursor: pointer; /* Change cursor to pointer */
+      }
+
+      #bottom-images img:last-child {
+        margin-right: 0; /* Remove margin for the last image */
+      }
+
+      #bottom-images img:last-child {
+        margin-right: 0; /* Remove margin for the last image */
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="imageNameInput" placeholder="Enter image name" />
+    <button onclick="updateDisplayImage()">Display Image</button>
+    <div id="image-container">
+      <!-- Image will be loaded here -->
+    </div>
+    <div id="bottom-images">
+      <!-- Placeholder images will be loaded here -->
+    </div>
+
+    <script>
+      // Base URL for images
+      var baseUrl =
+        'https://s3.us-west-1.amazonaws.com/bafc-startrek-cards-v1.420/';
+
+      var names = [
+        'Aadav Sundar.png',
+        'Aakash Patil.png',
+        'Abbey Yousfi.png',
+        'Abhi Sastri.png',
+        'Abhishek Garg.png',
+        'Abhishek Sastri.png',
+        'Adam Goldstein.png',
+        'Adele Smolansky.png',
+        'Adolfo M. Valdivieso.png',
+        'Aimin Justin Sang.png',
+        'Aining Liang.png',
+        'Akash Thakur.png',
+        'Akhilesh Gupta.png',
+        'Akhilesh Koppineni.png',
+        'Akio Kurata.png',
+        'Akshaya Aradhya.png',
+        'Alejandra Maguina.png',
+        'Alex Kearns.png',
+        'Alex Moon.png',
+        'Alex Voronovich.png',
+        'Allen Pan.png',
+        'Amit Butala.png',
+        'Ana Pavlova.png',
+        'Anchit Jain.png',
+        'Andrew Tan.png',
+        'Angelina.png',
+        'Anna Yuan.png',
+        'Anthony H. Lei.png',
+        'Ariel.png',
+        'Arvind Vivekanandan.png',
+        'Ashaya Sharma.png',
+        'Ashrya Agrawal.png',
+        'Ayush Khanna.png',
+        'Baotong Mi.png',
+        'Bart Rosier.png',
+        'Barton Rhodes.png',
+        'Bihan Mahadewa.png',
+        'Blake Zhu.png',
+        'Boxuan Zhong.png',
+        'BoYu Chu.png',
+        'Brian Sparkes.png',
+        'Carol.png',
+        'Charles Curt.png',
+        'Chengling Qiu.png',
+        'Chris Gu.png',
+        'Christina Bjornstrom.png',
+        'Claire Liu.png',
+        'Coert Du Plessis.png',
+        'Colton Kaplan.png',
+        'Dana.png',
+        'Dane Patterson.png',
+        'Daniel Rodriguez.png',
+        'Danil Kislinskiy.png',
+        'Danny Wang.png',
+        'Darwin Tu.png',
+        'David Chiu.png',
+        'David PERAN.png',
+        'David Shi.png',
+        'Dawei Shi.png',
+        'Devon Fu.png',
+        'Diana Munoz Lar.png',
+        'Duo Ding.png',
+        'Dylan Le.png',
+        'Dylan Zhang.png',
+        'Eason song.png',
+        'Easson Kang.png',
+        'Elliot K Nell.png',
+        'Elsa Bismuth.png',
+        'Emory Nager.png',
+        'Erika Bahr.png',
+        'Eva Wang.png',
+        'Evgeniy Zhdanov.png',
+        'Federico Quintana.png',
+        'Filippo Nigro.png',
+        'Finys Cai.png',
+        'Fiona Zhang.png',
+        'Florence Li.png',
+        'Franco Leonardo Huang.png',
+        'Frank Lin.png',
+        'Frank Zhu.png',
+        'Fred Addy.png',
+        'Gabriel Paunescu.png',
+        'Garrett Jin.png',
+        'Gaurav Parvadiya.png',
+        'Grant Roscoe.png',
+        'Gregory Gallinat.png',
+        'Hanyu Xue.png',
+        'Harry Wetherall.png',
+        'Harsh Kupwade.png',
+        'Hiren Gadhvi.png',
+        'Howard(Yaohua) Guo.png',
+        'Huaizheng Zhang.png',
+        'Igor Khmel.png',
+        'Ilka Arraut.png',
+        'Jack Chan.png',
+        'Jack Jin.png',
+        'Jacob Trebil.png',
+        'James Noh.png',
+        'James Wen.png',
+        'James Yin.png',
+        'Janan Rajeevikaran.png',
+        'Jason Liu.png',
+        'Jason Wu.png',
+        'Jason.png',
+        'Jeffrey.png',
+        'Jennifer Chan, CFA.png',
+        'Jeremy Brouillet.png',
+        'Jeremy Ding.png',
+        'Jerry Pan.png',
+        'Jessica Kobilova.png',
+        'Jianing Ni.png',
+        'Jiayan Zhang.png',
+        'Jimmy Ding.png',
+        'Jing (Krystal) Chen.png',
+        'Jiri Gesi.png',
+        'JJ Joseph.png',
+        'Joe Tusin.png',
+        'John Jiang, PhD.png',
+        'John Whaley.png',
+        'John Xin.png',
+        'John Yue.png',
+        'Jonathan Hsu.png',
+        'Jonathan Laplante.png',
+        'Jorge Quiroga.png',
+        'Joseph Thompson.png',
+        'Joseph Yeh.png',
+        'Josh LEE.png',
+        'Joshua Delgadillo.png',
+        'Juan Pablo Gonzalez Pacheco.png',
+        'Jun Liang Lee.png',
+        'Jun Liu.png',
+        'Karan Chaudhry.png',
+        'Karim Guessous.png',
+        'Kathan shah.png',
+        'Katherine Duan.png',
+        'Katherine Villacorta.png',
+        'Kaya Niu.png',
+        'Keith Zhang.png',
+        'Kelly Peng.png',
+        'Kengo Shudo.png',
+        'Kenneth Hurley.png',
+        'Kent Wang.png',
+        'Keting Cen.png',
+        'Kevin Mei.png',
+        'KG Charles-Harris.png',
+        'Khem Agarwal.png',
+        'Kishan Bulusu.png',
+        'Konstantin Voronin.png',
+        'Kristen Steudel.png',
+        'Kylin shaw.png',
+        'Laura Lin.png',
+        'Lena Li.png',
+        'Lenjoy Lin.png',
+        'Leonard Tam.png',
+        'Leonie Freisinger.png',
+        'Li Zhang.png',
+        'Libby Ye.png',
+        'Lin Sun.png',
+        'Lina Bahk.png',
+        'Link Daniel.png',
+        'Madhav Goenka.png',
+        'Mandar Ray.png',
+        'Mantin Lu.png',
+        'Margarita Geleta.png',
+        'Marina.png',
+        'Markus Pesonen.png',
+        'Medhya G..png',
+        'Megan Mou.png',
+        'Melissa.png',
+        'Michael Kuvshynov.png',
+        'Michel Bielecki.png',
+        'Michelle.png',
+        'Mingruo Qu.png',
+        'Mitesh Patel.png',
+        'Moe Nada.png',
+        'Mohsen Fathzadeh.png',
+        'Naveen Bisht.png',
+        'Neha Suresh.png',
+        'Neslihan Tuzun.png',
+        'Nicole Sheng.png',
+        'Niraj Rai.png',
+        'Onni Eriksson.png',
+        'Or Reznichky.png',
+        'Paul F. Welter.png',
+        'Paul Fang.png',
+        'Peter Chien.png',
+        'Peter Pan.png',
+        'Pranav Sriram.png',
+        'Pranay Baid.png',
+        'Prerak Garg.png',
+        'Priya Ganguly.png',
+        'Qi Zhang.png',
+        'Rajesh Kadam.png',
+        'Ran Zhang.png',
+        'Ranbor Li.png',
+        'Ranzel Merritt.png',
+        'Ray Xi.png',
+        'Ray Zhong.png',
+        'Rebecca Liu.png',
+        'Richard Ou.png',
+        'Rishi Choudhary.png',
+        'Rohit Ramesh.png',
+        'Roshan Manjaly.png',
+        'Rosie Qu.png',
+        'Ruby Yeh.png',
+        'Rui Wu.png',
+        'Ruofan Kong.png',
+        'Ryan.png',
+        'Saharsh Agrawal.png',
+        'Samder Khangarot.png',
+        'Samuel Z Liu.png',
+        'Sanjay Sabnis.png',
+        'Sen Xu.png',
+        'Serephina Ha.png',
+        'Shaharyar Anjum.png',
+        'Shahin Aliyev.png',
+        'Shan Huang.png',
+        'Shanu Joshi.png',
+        'Sharon.png',
+        'Shashank Ashtikar.png',
+        'Sheldon Huang.png',
+        'Shuai Li.png',
+        'Shuo Wang.png',
+        'Sidhant.png',
+        'Siming Li.png',
+        'Simon Ho.png',
+        'Simon Linwood.png',
+        'Simon Song.png',
+        'Siqi Lin.png',
+        'Sira.png',
+        'Siva Udayamurthy.png',
+        'Sivaprasad Radhakrishnan Lakshmi.png',
+        'Siyi (Katherine) Gao.png',
+        'Sneh Dhruv.png',
+        'Sneha Jayaganthan.png',
+        'Sophie Vu.png',
+        'Srinidhi (Sri) Polkampally.png',
+        'Stephane PAQUET.png',
+        'Stephanie Zhao.png',
+        'Steven Lee.png',
+        'Susho.png',
+        'Suzie Melkonyan-Griffith.png',
+        'Tamir Barzilai.png',
+        'Taranveer Singh.png',
+        'Te�fanes Oliveira.png',
+        'Tianwei Yue.png',
+        'Tiger Yu.png',
+        'Todd Nelson.png',
+        'Tom Kong.png',
+        'Tomasz Jedruszak.png',
+        'Tong Xu.png',
+        'Urvi Bhandari.png',
+        'Valerie Li.png',
+        'Vamshi Mokshagundam.png',
+        'Varuna Chander.png',
+        'Ved Upadhyay.png',
+        'Victor Chang.png',
+        'Victor Fei.png',
+        'Vikram Bhandari.png',
+        'Vinay Kumar.png',
+        'Vinit Agrawal.png',
+        'Vin�cius Oliveira.png',
+        'Webster Lincoln.png',
+        'Wei Li.png',
+        'Weiguang Shi.png',
+        'Weiqi Wang.png',
+        'Welton Wang.png',
+        'Wendi Yang.png',
+        'Wiktoria Leks.png',
+        'Xi (Chelsea) Qiu, FRM.png',
+        'Xiangyi Li.png',
+        'Xiao(Shaun) Wei.png',
+        'Xiaoxiao Liu.png',
+        'Xiaoxiao Qin.png',
+        'Xiaoyu Li.png',
+        'Xinmeng Zeng.png',
+        'Xiong Zhao.png',
+        'Xuejun Xie.png',
+        'Yan Zhang.png',
+        'Yang Chen.png',
+        'Yang Zhang.png',
+        'Yanqi Luo.png',
+        'Yilin Niu.png',
+        'Yilun Sun.png',
+        'Young.png',
+        'Yue Wang.png',
+        'Yuyan Duan.png',
+        'Yves Messy.png',
+        'Zhen Qi.png',
+        'Zhen Wu.png',
+        'Zhiheng Huang.png',
+        'Zhuorui Li.png',
+        'Zijian Jin.png',
+        'Zoey Zheng.png',
+        'Zohaib Patoli.png',
+        // Add more image URLs here...
+      ];
+      // Function to load images
+
+      function displayImage(name) {
+        // Capitalize the first letter of each word
+        var formattedName = name.replace(/\b\w/g, function (char) {
+          return char.toUpperCase();
+        });
+
+        // Replace spaces with "+"
+        formattedName = formattedName.replace(/\s+/g, '+');
+
+        var imageUrl = baseUrl + formattedName + '.png';
+        var container = document.getElementById('image-container');
+        container.innerHTML = ''; // Clear previous image
+        var img = document.createElement('img');
+        img.src = imageUrl;
+        container.appendChild(img);
+      }
+
+      function updateDisplayImage() {
+        var imageName = document.getElementById('imageNameInput').value.trim();
+        if (imageName !== '') {
+          displayImage(imageName); // Call displayImage function with input name
+        } else {
+          alert('Please enter a valid image name.');
+        }
+      }
+      // Function to display image using URL
+      function displayMainImage(imageUrl) {
+        var container = document.getElementById('image-container');
+        container.innerHTML = ''; // Clear previous image
+        var img = document.createElement('img');
+        img.src = imageUrl;
+        container.appendChild(img);
+      }
+
+      function populatePlaceholdersRandomly() {
+        var bottomImagesContainer = document.getElementById('bottom-images');
+        // Clear previous images
+        bottomImagesContainer.innerHTML = '';
+        // Shuffle placeholderNames array
+        names.sort(() => Math.random() - 0.5);
+        // Take only first 5 names
+        var selectedNames = names.slice(0, 5);
+        selectedNames.forEach(function (name) {
+          var img = document.createElement('img');
+          img.src = baseUrl + name;
+          img.alt = name;
+          img.addEventListener('click', function () {
+            var imageUrl = this.src; // Get the name of the clicked image
+            displayMainImage(imageUrl); // Display the clicked image using its name
+            populatePlaceholdersRandomly();
+          });
+          bottomImagesContainer.appendChild(img);
+        });
+      }
+
+      // Call the function to populate placeholder images
+      populatePlaceholdersRandomly();
+    </script>
+  </body>
+</html>
