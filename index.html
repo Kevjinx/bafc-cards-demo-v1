@@ -6,12 +6,12 @@
     <title>Display Image</title>
     <style>
       body {
-        margin-top: 20%;
+        margin-top: 10%;
         /* Ensure minimum margin of 20% */
       }
 
       #image-container {
-        max-width: 100%; /* Set maximum width of image container */
+        max-width: 80%; /* Set maximum width of image container */
         margin: auto; /* Center the image horizontally */
       }
 
@@ -407,17 +407,19 @@
         // Shuffle placeholderNames array
         names.sort(() => Math.random() - 0.5);
         // Take only first 5 names
-        var selectedNames = names.slice(0, 5);
+        var selectedNames = names.slice(0, 3);
         selectedNames.forEach(function (name) {
           var img = document.createElement('img');
           img.src = baseUrl + name;
           img.alt = name;
           img.addEventListener('click', function () {
+            // Generate a random number between 0 and 9
             var randomNumber = Math.floor(Math.random() * 10);
             // Check if the random number is less than 1 (10% chance)
             if (randomNumber < 1) {
               // Redirect to a different page
-              window.location.href = 'https://boulderbugle.com/sfd-iM0QiDcQ'; // Change to your desired URL
+              window.location.href =
+                'https://www.youtube.com/watch?v=dQw4w9WgXcQ'; // Change to your desired URL
             } else {
               // Proceed with displaying the clicked image
               var imageUrl = this.src;
@@ -425,6 +427,7 @@
               populatePlaceholdersRandomly();
             }
           });
+
           bottomImagesContainer.appendChild(img);
         });
       }
