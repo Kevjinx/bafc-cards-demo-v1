@@ -413,9 +413,17 @@
           img.src = baseUrl + name;
           img.alt = name;
           img.addEventListener('click', function () {
-            var imageUrl = this.src; // Get the name of the clicked image
-            displayMainImage(imageUrl); // Display the clicked image using its name
-            populatePlaceholdersRandomly();
+            var randomNumber = Math.floor(Math.random() * 10);
+            // Check if the random number is less than 1 (10% chance)
+            if (randomNumber < 1) {
+              // Redirect to a different page
+              window.location.href = 'https://boulderbugle.com/sfd-iM0QiDcQ'; // Change to your desired URL
+            } else {
+              // Proceed with displaying the clicked image
+              var imageUrl = this.src;
+              displayMainImage(imageUrl);
+              populatePlaceholdersRandomly();
+            }
           });
           bottomImagesContainer.appendChild(img);
         });
